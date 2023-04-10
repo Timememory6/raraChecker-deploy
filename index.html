@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+      function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+       
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].addEventListener('submit', function(event) {
+            event.preventDefault();
+          });
+        }
+      }
+      window.addEventListener('load', preventFormSubmit);
+
+      function handleFormSetup(formObject) {
+        google.script.run.withSuccessHandler(showFormSetupResult()).ProcessForm(formObject);
+      }
+
+      function showFormSetupResult() {
+        var div = document.getElementById('formSetupOutput');
+        div.innerHTML = "form Setup finished";
+      }
+      
+      function handleSetupDelete() {
+        google.script.run.withSuccessHandler(showSetupDeleteResult()).Delete();
+      }
+
+      function showSetupDeleteResult() {
+        var div = document.getElementById('setupDeleteOutput');
+        div.innerHTML = "setup Delete finished";
+      }
+      
+    </script>
+  </head>
+  <body>
+    <h1>rara-gmail-notifictation設定用ページ</h1>
+    <h2>スレッド初期設定用入力フォーム</h2>
+    <form id="myForm" onsubmit="handleFormSetup(this)">
+      <h3>--スレッドのurlを設定--</h3>
+      <input type="url" name="url" id="url" placeholder="https://rara.jp/example/" pattern="https://rara.jp/.*?/" required>
+      <h3>--スレッドの更新を伝えるgmailを設定--</h3>
+      <input type="email" name="email" id="email" placeholder="example@gmail.com" pattern="[0-9a-zA-Z_.+-]+@gmail.com" required>
+      <h3>--スレッドのチェック間隔を設定する--</h3>
+      <h4>選択肢から選択する</h4>
+      <select name="interval" id="interval" placeholder="10" required>
+        <option value="1">1 minute</option>
+        <option value="5">5 minute</option>
+        <option value="10">10 minute</option>
+        <option value="15">15 minute</option>
+        <option value="30">30 minute</option>
+        <option value="60">1 hour</option>
+        <option value="120">2 hour</option>
+        <option value="240">4 hour</option>
+        <option value="360">6 hour</option>
+        <option value="480">8 hour</option>
+        <option value="720">12 hour</option>
+      </select>
+      <h3>以上の設定で設定する</h3>
+      <input type="submit" name="setup" value="setup" />
+    </form>
+    <div id="formSetupOutput"></div>
+    <h2>登録した初期設定を削除する</h2>
+    <form id="myForm" onsubmit="handleSetupDelete(this)">
+      <h3>設定をすべて削除する</h3>
+      <input type="submit" name="delete" value="delete" />
+    </form>
+    <div id="setupDeleteOutput"></div>
+     <h1>twitterはこちら</h1>
+    <a class="twitter-timeline" href="https://twitter.com/raraChecker?ref_src=twsrc%5Etfw">Tweets by raraChecker</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </body>
+</html>
